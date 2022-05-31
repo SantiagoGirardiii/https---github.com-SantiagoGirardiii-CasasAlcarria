@@ -1,13 +1,10 @@
 package CASASALCARRIA;
 
-import java.io.*;
-import java.util.Scanner;
-
 public class TablaDispersa {
     static final int TAMTABLA = 101;
-    private static int numElementos;
-    private static double factorCarga;
-    private static CasaRural[] tabla;
+    private int numElementos;
+    private double factorCarga;
+    private CasaRural[] tabla;
 
     public TablaDispersa() {
         tabla = new CasaRural[TAMTABLA];
@@ -17,12 +14,11 @@ public class TablaDispersa {
         factorCarga = 0.0;
     }
 
-    public static int direccion(String clave) {
+    public int direccion(String clave) {
         int i = 0, p;
         long d;
-        d = transformaCadena(clave);// aplica aritmética modular para obtener dirección base
+        d = transformaCadena(clave);
         p = (int) (d % TAMTABLA);
-        // bucle de exploración
         while (tabla[p] != null && !tabla[p].elCodigo().equals(clave)) {
             i++;
             p = p + i * i;
@@ -31,7 +27,7 @@ public class TablaDispersa {
         return p;
     }
 
-    static long transformaCadena(String c) {
+    long transformaCadena(String c) {
         long d;
         d = 0;
         for (int j = 0; j < Math.min(10, c.length()); j++) {
@@ -42,7 +38,7 @@ public class TablaDispersa {
         return d;
     }
 
-    public static void insertar(CasaRural r) {
+    public void insertar(CasaRural r) {
         int posicion;
         posicion = direccion(r.elCodigo());
         tabla[posicion] = r;
@@ -52,19 +48,19 @@ public class TablaDispersa {
             System.out.println("\n!! Factor de carga supera el 50%.!!" + " Conviene aumentar el tamaño.");
     }
 
-    public static CasaRural buscar(String clave) {
+    public CasaRural buscar(String clave) {
         CasaRural pr;
         int posicion;
         posicion = direccion(clave);
         pr = tabla[posicion];
+        pr.muestra();
         if (pr != null)
             if (!pr.esAlta)
                 pr = null;
-        pr.muestra();
         return pr;
     }
 
-    public static void eliminar(String clave) {
+    public void eliminar(String clave) {
         int posicion;
         posicion = direccion(clave);
         if (tabla[posicion] != null)
